@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const FetchData = () => {
   const [product, setProduct] = useState([]);
+  const [search, setSearch] = useState([]);
   const [second, setsecond] = useState({
     id: "",
     name: "",
@@ -32,6 +33,19 @@ const FetchData = () => {
   };
   return (
     <div>
+      <div className="flex">
+        <label>Welcome!!!!!!!!!</label>
+      </div>
+      <div className="flex">
+        <input
+          type="text"
+          placeholder="Search Name here"
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
+      </div>
+      <br />
       <table className="table">
         <thead>
           <tr>
@@ -43,24 +57,34 @@ const FetchData = () => {
           </tr>
         </thead>
         <tbody>
-          {product.map((data, i) => (
-            <tr key={i}>
-              <td>{data.id}</td>
-              <td>{data.name}</td>
-              <td>{data.email}</td>
-              <td>{data.username}</td>
-              <td>
-                <button
-                  class="btn btn-warning"
-                  onClick={(e) => showdata(data.id)}
-                  data-toggle="modal"
-                  data-target=".bd-example-modal-lg"
-                >
-                  Get more details
-                </button>
-              </td>
-            </tr>
-          ))}
+          {product
+            .filter((item) => {
+              if (search == "") {
+                return item;
+              } else if (
+                item.name.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return item;
+              }
+            })
+            .map((data, i) => (
+              <tr key={i}>
+                <td>{data.id}</td>
+                <td>{data.name}</td>
+                <td>{data.email}</td>
+                <td>{data.username}</td>
+                <td>
+                  <button
+                    class="btn btn-warning"
+                    onClick={(e) => showdata(data.id)}
+                    data-toggle="modal"
+                    data-target=".bd-example-modal-lg"
+                  >
+                    Get more details
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       {/* <div>
@@ -100,9 +124,7 @@ const FetchData = () => {
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Id NO:{second.id}
-              </h5>
+              <h4 class="modal-title" id="exampleModalLabel"></h4>
               <button
                 type="button"
                 class="close"
